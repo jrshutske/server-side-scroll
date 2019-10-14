@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-export const textFieldStyles = makeStyles(theme => ({
+export const useTextFieldStyles = makeStyles(theme => ({
     container: {
         display: 'flex',
         flexWrap: 'wrap',
@@ -14,5 +14,11 @@ export const textFieldStyles = makeStyles(theme => ({
     },
     menu: {
         width: 200,
+    },
+}));
+
+export const useProgressBarStyles = makeStyles(theme => ({
+    progress: {
+        margin: theme.spacing(2),
     },
 }));
