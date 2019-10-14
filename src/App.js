@@ -16,16 +16,8 @@ function App() {
   const debouncedSearchTerm = useDebounce(searchTerm, 1000);
   const take = 10
 
-  const searchGiphy = (value, clear) => {
-    setIsSearching(true)
-    search(skip, take, value).then(res => {
-      setIsSearching(false);
-      setSkip(skip + 10)
-      !clear ? setResults([...results, ...res]) : setResults([...res])
-    });
-  };
-  useInfiniteScroll(searchGiphy, searchTerm, document)
-  
+  useEffect(() => setSkip(0), [searchTerm])
+
   useEffect(() => {
     if (debouncedSearchTerm) {
       setSkip(0)
@@ -35,7 +27,16 @@ function App() {
     }
   },[debouncedSearchTerm]);
 
-  
+  const searchGiphy = (value, clear) => {
+    setIsSearching(true)
+    search(skip, take, value).then(res => {
+      setIsSearching(false);
+      setSkip(skip + 10)
+      !clear ? setResults([...results, ...res]) : setResults([...res])
+    });
+  };
+  useInfiniteScroll(searchGiphy, searchTerm, document)
+
   return (
     <div id="screen" className="App">
       <header className="App-header">
@@ -47,7 +48,7 @@ function App() {
           margin="normal"
           variant="outlined"
           value={searchTerm}
-          onChange={(event)=>{ setSearchTerm(event.target.value); setSkip(0) }}
+          onChange={(event)=>{ setSearchTerm(event.target.value);  }}
         />
         {isSearching && <CircularProgress className={progressBarStyles.progress} color="secondary" />}
         { results.map((result,i) => {
