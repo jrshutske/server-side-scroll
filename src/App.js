@@ -48,7 +48,7 @@ function App() {
           margin="normal"
           variant="outlined"
           value={searchTerm}
-          onChange={(event)=>{ setSearchTerm(event.target.value);  }}
+          onChange={(event)=>setSearchTerm(event.target.value)}
         />
         {isSearching && <CircularProgress className={progressBarStyles.progress} color="secondary" />}
         { results.map((result,i) => {
