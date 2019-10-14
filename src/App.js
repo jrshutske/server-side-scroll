@@ -14,20 +14,21 @@ function App() {
   const textFieldStyles = useTextFieldStyles()
   const progressBarStyles = useProgressBarStyles()
   const debouncedSearchTerm = useDebounce(searchTerm, 1000);
+  const take = 10
 
-  const searchGiphy = async (value, clear) => {
+  const searchGiphy = (value, clear) => {
     setIsSearching(true)
-    search(skip, 10, value).then(res => {
+    search(skip, take, value).then(res => {
       setIsSearching(false);
-      !clear ? setSkip(skip + 10) : setSkip(0)
+      setSkip(skip + 10)
       !clear ? setResults([...results, ...res]) : setResults([...res])
     });
   };
-  
   useInfiniteScroll(searchGiphy, searchTerm, document)
-
+  
   useEffect(() => {
     if (debouncedSearchTerm) {
+      setSkip(0)
       searchGiphy(debouncedSearchTerm, "clear")
     } else {
       setResults([]);
@@ -46,7 +47,7 @@ function App() {
           margin="normal"
           variant="outlined"
           value={searchTerm}
-          onChange={(event)=>setSearchTerm(event.target.value)}
+          onChange={(event)=>{ setSearchTerm(event.target.value); setSkip(0) }}
         />
         {isSearching && <CircularProgress className={progressBarStyles.progress} color="secondary" />}
         { results.map((result,i) => {
